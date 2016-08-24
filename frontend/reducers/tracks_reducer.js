@@ -1,5 +1,5 @@
 import {TracksConstants} from '../actions/tracks_actions.js';
-import { merge } from 'lodash/merge';
+import  merge  from 'lodash/merge';
 
 let curTrackId = 0;
 
@@ -7,27 +7,43 @@ const tracksReducer = (state = {}, action) => {
   switch (action.type) {
     case TracksConstants.START_RECORDING:
       curTrackId++;
+      let newObj = {};
+
       let newTrack = {
         id: curTrackId,
         name: `Track ${curTrackId}`,
         roll: [],
         timeStart: action.timeNow
       };
-      return merge({}, state, {curTrackId: newTrack});
+
+      newObj[curTrackId] = newTrack;
+      return merge({}, state, newObj);
     case TracksConstants.STOP_RECORDING:
       let currTrack = merge({}, state[curTrackId]);
+
       currTrack.roll.push({
         notes: [],
         timeSlice: action.timeNow - state[curTrackId].timeStart
       });
-      return merge({}, state, {curTrackId: currTrack});
+      let newState2 = merge({}, state, {curTrackId: currTrack});
+      console.log(newState2);
+      return newState2;
     case TracksConstants.ADD_NOTES:
       let currTrack2 = merge({}, state[curTrackId]);
+      console.log("t1");
+      console.log(currTrack2);
+
       currTrack2.roll.push({
         notes: action.notes,
         timeSlice: action.timeNow - state[curTrackId].timeStart
       });
-      return merge({}, state, {curTrackId: currTrack2});
+
+      let newObj2 = {};
+      newObj2[curTrackId] = currTrack2;
+
+      console.log("t2");
+      console.log(newObj2);
+      return merge({}, state, newObj2);
     default:
       return state;
   }

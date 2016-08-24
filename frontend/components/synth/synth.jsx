@@ -25,11 +25,19 @@ class Synth extends React.Component {
   onKeyDown (e) {
     let key = KEYS_TO_NOTE_NAMES[e.which];
     this.props.keyPressed(key);
+
+    if(this.props.isRecording){
+      this.props.addNotes(this.notes);
+    }
   }
 
   onKeyUp (e) {
     let key = KEYS_TO_NOTE_NAMES[e.which];
     this.props.keyReleased(key);
+
+    if(this.props.isRecording){
+      this.props.addNotes(this.notes);
+    }
   }
 
   playNotes () {
